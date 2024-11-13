@@ -34,7 +34,7 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            width: 150px;
+            width: 180px;
             text-align: left;
         }
         .settings-container label, .settings-container input {
@@ -74,15 +74,42 @@
     <div class="settings-container" id="settings-container">
         <label for="outage-duration">بازه خاموشی (ساعت):</label>
         <input type="number" id="outage-duration" min="1" max="24" value="1" step="1">
+
+        <div>
+            <p>انتخاب پلن :</p>
+            <div>
+                <label><input type="radio" name="plan" value="1"> پلن 1</label>
+                <label><input type="radio" name="plan" value="2"> پلن 2</label>
+            </div>
+            <div>
+                <label><input type="radio" name="plan" value="3"> پلن 3</label>
+                <label><input type="radio" name="plan" value="4"> پلن 4</label>
+            </div>
+            <div>
+                <label><input type="radio" name="plan" value="5"> پلن 5</label>
+                <label><input type="radio" name="plan" value="6"> پلن 6</label>
+            </div>
+            <div>
+                <label><input type="radio" name="plan" value="7"> پلن 7</label>
+                <label><input type="radio" name="plan" value="8"> پلن 8</label>
+            </div>
+        </div>
+
         <button onclick="saveSettings()">تایید</button>
     </div>
 
     <script>
         let outageDuration = 1;
+        let selectedPlan = 1;
 
         if (localStorage.getItem("outageDuration")) {
             outageDuration = parseInt(localStorage.getItem("outageDuration"));
             document.getElementById("outage-duration").value = outageDuration;
+        }
+
+        if (localStorage.getItem("selectedPlan")) {
+            selectedPlan = parseInt(localStorage.getItem("selectedPlan"));
+            document.querySelector(`input[name="plan"][value="${selectedPlan}"]`).checked = true;
         }
 
         function toggleSettings() {
@@ -93,6 +120,10 @@
         function saveSettings() {
             outageDuration = parseInt(document.getElementById('outage-duration').value);
             localStorage.setItem("outageDuration", outageDuration);
+
+            selectedPlan = document.querySelector('input[name="plan"]:checked').value;
+            localStorage.setItem("selectedPlan", selectedPlan);
+
             document.getElementById('settings-container').style.display = 'none';
             updateOutageTime();
         }
@@ -122,7 +153,8 @@
             const startHour = 9;
             const endHour = 17;
 
-            const baseDate = new Date(2024, 0, 1);
+            const baseDate = new Date(2024, 0, selectedPlan);
+
             const daysPassed = Math.floor((now - baseDate) / (1000 * 60 * 60 * 24));
 
             let outageStart = startHour + (daysPassed * outageDuration) % (endHour - startHour);
