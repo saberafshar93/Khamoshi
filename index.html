@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>تاریخ و ساعت</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            direction: rtl;
+        }
+        .date-time, .outage-time {
+            font-size: 2em;
+            color: darkblue;
+            margin-top: 20px;
+        }
+        .weekday, .hijri-date, .gregorian-date {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        .outage-time {
+            font-size: 1.5em;
+            color: darkred;
+        }
+        .image-container {
+            margin-top: 30px;
+        }
+        .settings-container {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 150px;
+            text-align: left;
+        }
+        .settings-container label, .settings-container input {
+            font-size: 1em;
+            margin: 5px;
+        }
+        .settings-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: blue;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="date-time" id="date-time"></div>
+    <div class="weekday" id="weekday"></div>
+    <div class="hijri-date" id="hijri-date"></div>
+    <div class="gregorian-date" id="gregorian-date"></div>
+    <div class="outage-time" id="outage-time"></div>
+
+    <div class="image-container">
+        <img src="https://www.beytoote.com/images/stories/fun/power1-outage1-cartoon3.jpg" alt="Power Outage Image" width="300">
+    </div>
+
+    <!-- دکمه تنظیمات -->
+    <button class="settings-button" onclick="toggleSettings()">تنظیمات ساعت خاموشی</button>
+
+    <!-- فرم تنظیمات -->
+    <div class="settings-container" id="settings-container">
+        <label for="outage-duration">بازه خاموشی (ساعت):</label>
+        <input type="number" id="outage-duration" min="1" max="24" value="1" step="1">
+        <button onclick="saveSettings()">تایید</button>
+    </div>
+
+    <script>
+        let outageDuration = 1;
+
+        if (localStorage.getItem("outageDuration")) {
+            outageDuration = parseInt(localStorage.getItem("outageDuration"));
+            document.getElementById("outage-duration").value = outageDuration;
+        }
+
+        function toggleSettings() {
+            const settingsContainer = document.getElementById('settings-container');
+            settingsContainer.style.display = settingsContainer.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function saveSettings() {
+            outageDuration = parseInt(document.getElementById('outage-duration').value);
+            localStorage.setItem("outageDuration", outageDuration);
+            document.getElementById('settings-container').style.display = 'none';
+            updateOutageTime();
+        }
+
+        function updateDateTime() {
+            const now = new Date();
+            const options = { timeZone: 'Asia/Tehran', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const timeString = now.toLocaleTimeString('fa-IR', options);
+
+            const persianDate = new Intl.DateTimeFormat('fa-IR', { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+            document.getElementById("date-time").innerHTML = `تاریخ امروز: ${persianDate} - ساعت آنلاین: ${timeString}`;
+
+            const weekday = new Intl.DateTimeFormat('fa-IR', { weekday: 'long' }).format(now);
+            document.getElementById("weekday").innerHTML = ` ${weekday}`;
+
+            const hijriDateOptions = { calendar: 'islamic', day: 'numeric', month: 'long', year: 'numeric' };
+            const hijriDate = new Intl.DateTimeFormat('fa-IR-u-ca-islamic', hijriDateOptions).format(now);
+            document.getElementById("hijri-date").innerHTML = `تاریخ قمری: ${hijriDate}`;
+
+            const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const gregorianDate = now.toLocaleDateString('en-US', gregorianOptions);
+            document.getElementById("gregorian-date").innerHTML = `Today is: ${gregorianDate}`;
+        }
+
+        function updateOutageTime() {
+            const now = new Date();
+            const startHour = 9;
+            const endHour = 17;
+
+            const baseDate = new Date(2024, 0, 1);
+            const daysPassed = Math.floor((now - baseDate) / (1000 * 60 * 60 * 24));
+
+            let outageStart = startHour + (daysPassed * outageDuration) % (endHour - startHour);
+            let outageEnd = outageStart + outageDuration;
+
+            if (outageEnd > endHour) {
+                outageEnd = startHour + (outageEnd - endHour);
+            }
+
+            document.getElementById("outage-time").innerHTML = `ساعت خاموشی امروز: ${outageStart} الی ${outageEnd}`;
+        }
+
+        setInterval(updateDateTime, 1000);
+        updateOutageTime();
+    </script>
+
+</body>
+</html>
