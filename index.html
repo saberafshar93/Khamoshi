@@ -46,7 +46,7 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            width: 180px;
+            width: 200px;
             text-align: left;
         }
         .settings-container label, .settings-container input {
@@ -79,6 +79,7 @@
 </head>
 <body>
 
+    <!-- نمایش تاریخ و ساعت -->
     <div class="date-time" id="date-time"></div>
     <div class="weekday" id="weekday"></div>
     <div class="hijri-date" id="hijri-date"></div>
@@ -89,23 +90,36 @@
         <img src="https://up.20script.ir/file/23a7-power1-outage1-cartoon3.jpg" alt="Power Outage Image" width="300">
     </div>
 
-    <!-- آیکون لینکدین -->
     <div class="linkedin-icon">
         <a href="https://www.linkedin.com/in/saber-s-afshar/" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn">
         </a>
     </div>
 
-    <!-- دکمه تنظیمات -->
     <button class="settings-button" onclick="toggleSettings()">تنظیمات پلن خاموشی</button>
 
-    <!-- فرم تنظیمات -->
     <div class="settings-container" id="settings-container">
         <label for="outage-duration">بازه خاموشی (ساعت):</label>
         <input type="number" id="outage-duration" min="1" max="24" value="1" step="1">
 
         <div>
-            <p>انتخاب پلن :</p>
+            <p>انتخاب طرح:</p>
+            <div>
+                <label><input type="radio" name="schedule" value="1"> طرح 1 (9 تا 17)</label>
+            </div>
+            <div>
+                <label><input type="radio" name="schedule" value="2"> طرح 2 (10 تا 18)</label>
+            </div>
+            <div>
+                <label><input type="radio" name="schedule" value="3"> طرح 3 (10 تا 20)</label>
+            </div>
+            <div>
+                <label><input type="radio" name="schedule" value="4"> طرح 4 (10 تا 22)</label>
+            </div>
+        </div>
+
+        <div>
+            <p>انتخاب پلن:</p>
             <div>
                 <label><input type="radio" name="plan" value="1"> پلن 1</label>
                 <label><input type="radio" name="plan" value="2"> پلن 2</label>
@@ -122,23 +136,32 @@
                 <label><input type="radio" name="plan" value="7"> پلن 7</label>
                 <label><input type="radio" name="plan" value="8"> پلن 8</label>
             </div>
+            <div>
+                <label><input type="radio" name="plan" value="9"> پلن 9</label>
+            </div>
         </div>
 
         <button onclick="saveSettings()">تایید</button>
     </div>
 
     <script>
+        // داده‌های ذخیره شده در localStorage
         let outageDuration = 1;
         let selectedPlan = 1;
+        let schedule = 2;
 
+        // بازیابی اطلاعات ذخیره شده
         if (localStorage.getItem("outageDuration")) {
             outageDuration = parseInt(localStorage.getItem("outageDuration"));
             document.getElementById("outage-duration").value = outageDuration;
         }
-
         if (localStorage.getItem("selectedPlan")) {
             selectedPlan = parseInt(localStorage.getItem("selectedPlan"));
             document.querySelector(`input[name="plan"][value="${selectedPlan}"]`).checked = true;
+        }
+        if (localStorage.getItem("schedule")) {
+            schedule = parseInt(localStorage.getItem("schedule"));
+            document.querySelector(`input[name="schedule"][value="${schedule}"]`).checked = true;
         }
 
         function toggleSettings() {
@@ -150,11 +173,29 @@
             outageDuration = parseInt(document.getElementById('outage-duration').value);
             localStorage.setItem("outageDuration", outageDuration);
 
-            selectedPlan = document.querySelector('input[name="plan"]:checked').value;
+            selectedPlan = parseInt(document.querySelector('input[name="plan"]:checked').value);
             localStorage.setItem("selectedPlan", selectedPlan);
+
+            schedule = parseInt(document.querySelector('input[name="schedule"]:checked').value);
+            localStorage.setItem("schedule", schedule);
 
             document.getElementById('settings-container').style.display = 'none';
             updateOutageTime();
+        }
+
+        function getScheduleTimes(schedule) {
+            switch (schedule) {
+                case 1:
+                    return { startHour: 9, endHour: 17 };
+                case 2:
+                    return { startHour: 10, endHour: 18 };
+                case 3:
+                    return { startHour: 10, endHour: 20 };
+                case 4:
+                    return { startHour: 10, endHour: 22 };
+                default:
+                    return { startHour: 10, endHour: 18 };
+            }
         }
 
         function updateDateTime() {
@@ -179,11 +220,9 @@
 
         function updateOutageTime() {
             const now = new Date();
-            const startHour = 10;
-            const endHour = 18;
+            const { startHour, endHour } = getScheduleTimes(schedule);
 
             const baseDate = new Date(2024, 0, selectedPlan);
-
             const daysPassed = Math.floor((now - baseDate) / (1000 * 60 * 60 * 24));
 
             let outageStart = startHour + (daysPassed * outageDuration) % (endHour - startHour);
@@ -197,6 +236,8 @@
         }
 
         setInterval(updateDateTime, 1000);
+        setInterval(updateOutageTime, 1000);
+        updateDateTime();
         updateOutageTime();
     </script>
 
