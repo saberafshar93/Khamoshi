@@ -106,30 +106,22 @@
             <p>انتخاب طرح:</p>
             <div>
                 <label><input type="radio" name="schedule" value="1"> طرح 1 (9 تا 17)</label>
+                <label><input type="radio" name="schedule" value="2"> طرح 2 (9 تا 19)</label>
             </div>
             <div>
-                <label><input type="radio" name="schedule" value="1"> طرح 2 (9 تا 19)</label>
+                <label><input type="radio" name="schedule" value="3"> طرح 3 (9 تا 21)</label>
+                <label><input type="radio" name="schedule" value="4"> طرح 4 (10 تا 18)</label>
             </div>
             <div>
-                <label><input type="radio" name="schedule" value="1"> طرح 3 (9 تا 21)</label>
+                <label><input type="radio" name="schedule" value="5"> طرح 5 (10 تا 20)</label>
+                <label><input type="radio" name="schedule" value="6"> طرح 6 (10 تا 22)</label>
             </div>
             <div>
-                <label><input type="radio" name="schedule" value="2"> طرح 4 (10 تا 18)</label>
+                <label><input type="radio" name="schedule" value="7"> طرح 7 (11 تا 19)</label>
+                <label><input type="radio" name="schedule" value="8"> طرح 8 (11 تا 21)</label>
             </div>
             <div>
-                <label><input type="radio" name="schedule" value="3"> طرح 5 (10 تا 20)</label>
-            </div>
-            <div>
-                <label><input type="radio" name="schedule" value="4"> طرح 6 (10 تا 22)</label>
-            </div>
-            <div>
-                <label><input type="radio" name="schedule" value="1"> طرح 7 (11 تا 19)</label>
-            </div>
-            <div>
-                <label><input type="radio" name="schedule" value="1"> طرح 8 (11 تا 21)</label>
-            </div>
-            <div>
-                <label><input type="radio" name="schedule" value="1"> طرح 9 (11 تا 23)</label>
+                <label><input type="radio" name="schedule" value="9"> طرح 9 (11 تا 23)</label>
             </div>
         </div>
 
@@ -203,13 +195,23 @@
                 case 1:
                     return { startHour: 9, endHour: 17 };
                 case 2:
-                    return { startHour: 10, endHour: 18 };
+                    return { startHour: 9, endHour: 19 };
                 case 3:
-                    return { startHour: 10, endHour: 20 };
+                    return { startHour: 9, endHour: 21 };
                 case 4:
-                    return { startHour: 10, endHour: 22 };
-                default:
                     return { startHour: 10, endHour: 18 };
+                case 5:
+                    return { startHour: 10, endHour: 20 };
+                case 6:
+                    return { startHour: 10, endHour: 22 };
+                case 7:
+                    return { startHour: 11, endHour: 19 };
+                case 8:
+                    return { startHour: 11, endHour: 21 };
+                case 9:
+                    return { startHour: 11, endHour: 23 };
+                default:
+                    return { startHour: 9, endHour: 19 };
             }
         }
 
