@@ -160,39 +160,45 @@
     </div>
 
     <script>
-        // داده‌های ذخیره شده در localStorage
+        // گرفتن شناسه منحصر به فرد برای هر صفحه
+        const pageId = window.location.pathname;
+
+        // داده‌های ذخیره شده در localStorage با کلید منحصر به فرد
         let outageDuration = 1;
         let selectedPlan = 1;
         let schedule = 2;
 
-        const STORAGE_KEY = 'homeSettings';
-
-        function loadSettings() {
-            const savedSettings = JSON.parse(localStorage.getItem(STORAGE_KEY));
-            if (savedSettings) {
-                outageDuration = savedSettings.outageDuration;
-                selectedPlan = savedSettings.selectedPlan;
-                schedule = savedSettings.schedule;
-                document.getElementById("outage-duration").value = outageDuration;
-                document.querySelector(`input[name="plan"][value="${selectedPlan}"]`).checked = true;
-                document.querySelector(`input[name="schedule"][value="${schedule}"]`).checked = true;
-            }
+        // بازیابی اطلاعات ذخیره شده برای این صفحه خاص
+        if (localStorage.getItem(`${pageId}_outageDuration`)) {
+            outageDuration = parseInt(localStorage.getItem(`${pageId}_outageDuration`));
+            document.getElementById("outage-duration").value = outageDuration;
         }
-
-        function saveSettings() {
-            const settings = {
-                outageDuration: parseInt(document.getElementById('outage-duration').value),
-                selectedPlan: parseInt(document.querySelector('input[name="plan"]:checked').value),
-                schedule: parseInt(document.querySelector('input[name="schedule"]:checked').value),
-            };
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-            document.getElementById('settings-container').style.display = 'none';
-            updateOutageTime();
+        if (localStorage.getItem(`${pageId}_selectedPlan`)) {
+            selectedPlan = parseInt(localStorage.getItem(`${pageId}_selectedPlan`));
+            document.querySelector(`input[name="plan"][value="${selectedPlan}"]`).checked = true;
+        }
+        if (localStorage.getItem(`${pageId}_schedule`)) {
+            schedule = parseInt(localStorage.getItem(`${pageId}_schedule`));
+            document.querySelector(`input[name="schedule"][value="${schedule}"]`).checked = true;
         }
 
         function toggleSettings() {
             const settingsContainer = document.getElementById('settings-container');
             settingsContainer.style.display = settingsContainer.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function saveSettings() {
+            outageDuration = parseInt(document.getElementById('outage-duration').value);
+            localStorage.setItem(`${pageId}_outageDuration`, outageDuration);
+
+            selectedPlan = parseInt(document.querySelector('input[name="plan"]:checked').value);
+            localStorage.setItem(`${pageId}_selectedPlan`, selectedPlan);
+
+            schedule = parseInt(document.querySelector('input[name="schedule"]:checked').value);
+            localStorage.setItem(`${pageId}_schedule`, schedule);
+
+            document.getElementById('settings-container').style.display = 'none';
+            updateOutageTime();
         }
 
         function getScheduleTimes(schedule) {
@@ -216,51 +222,51 @@
                 case 9:
                     return { startHour: 11, endHour: 23 };
                 default:
-                    return { startHour: 9, endHour: 17 };
+                    return { startHour: 9, endHour: 19 };
             }
-        }
-
-        function updateOutageTime() {
-            const times = getScheduleTimes(schedule);
-            const startHour = times.startHour;
-            const endHour = times.endHour;
-
-            const start = new Date();
-            start.setHours(startHour, 0, 0);
-
-            const end = new Date();
-            end.setHours(endHour, 0, 0);
-
-            const startFormatted = `${start.getHours().toString().padStart(2, '0')}:${start.getMinutes().toString().padStart(2, '0')}`;
-            const endFormatted = `${end.getHours().toString().padStart(2, '0')}:${end.getMinutes().toString().padStart(2, '0')}`;
-
-            document.getElementById('outage-time').textContent = `زمان خاموشی: ${startFormatted} تا ${endFormatted}`;
         }
 
         function updateDateTime() {
             const now = new Date();
+            const options = { timeZone: 'Asia/Tehran', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const timeString = now.toLocaleTimeString('fa-IR', options);
 
-            const dateTimeElement = document.getElementById('date-time');
-            dateTimeElement.textContent = now.toLocaleTimeString('fa-IR');
+            const persianDate = new Intl.DateTimeFormat('fa-IR', { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+            document.getElementById("date-time").innerHTML = `تاریخ امروز: ${persianDate} - ساعت آنلاین: ${timeString}`;
 
-            const weekdayElement = document.getElementById('weekday');
-            const weekdays = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
-            weekdayElement.textContent = weekdays[now.getDay()];
+            const weekday = new Intl.DateTimeFormat('fa-IR', { weekday: 'long' }).format(now);
+            document.getElementById("weekday").innerHTML = ` ${weekday}`;
 
-            const hijriDateElement = document.getElementById('hijri-date');
-            hijriDateElement.textContent = `تاریخ هجری: ${now.toLocaleDateString('fa-IR-u-ca-islamic')}`;
+            const hijriDateOptions = { calendar: 'islamic', day: 'numeric', month: 'long', year: 'numeric' };
+            const hijriDate = new Intl.DateTimeFormat('fa-IR-u-ca-islamic', hijriDateOptions).format(now);
+            document.getElementById("hijri-date").innerHTML = `تاریخ قمری: ${hijriDate}`;
 
-            const gregorianDateElement = document.getElementById('gregorian-date');
-            gregorianDateElement.textContent = `تاریخ میلادی: ${now.toLocaleDateString('en-US')}`;
+            const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const gregorianDate = now.toLocaleDateString('en-US', gregorianOptions);
+            document.getElementById("gregorian-date").innerHTML = `Today is: ${gregorianDate}`;
         }
 
-        // بارگذاری تنظیمات ذخیره شده و به‌روزرسانی نمایش زمان خاموشی
-        loadSettings();
-        updateOutageTime();
-        updateDateTime();
+        function updateOutageTime() {
+            const now = new Date();
+            const { startHour, endHour } = getScheduleTimes(schedule);
 
-        // به‌روزرسانی ساعت هر ثانیه
+            const baseDate = new Date(2024, 0, selectedPlan);
+            const daysPassed = Math.floor((now - baseDate) / (1000 * 60 * 60 * 24));
+
+            let outageStart = startHour + (daysPassed * outageDuration) % (endHour - startHour);
+            let outageEnd = outageStart + outageDuration;
+
+            if (outageEnd > endHour) {
+                outageEnd = startHour + (outageEnd - endHour);
+            }
+
+            document.getElementById("outage-time").innerHTML = `ساعت خاموشی امروز: ${outageStart} الی ${outageEnd}`;
+        }
+
         setInterval(updateDateTime, 1000);
+        setInterval(updateOutageTime, 1000);
+        updateDateTime();
+        updateOutageTime();
     </script>
 
 </body>
