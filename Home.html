@@ -34,6 +34,11 @@
             color: crimson;
             margin-top: 20px;
         }
+        .page-title {
+            font-size: 2em;
+            color: crimson;
+            margin-top: 20px;
+        }
         .image-container {
             margin-top: 30px;
         }
@@ -79,7 +84,7 @@
             cursor: pointer;
         }
         .homepage-link {
-            color: #0077b5; /* رنگ لینکدین */
+            color: #0077b5;
             text-decoration: none;
             font-size: 18px;
             font-weight: bold;
@@ -90,6 +95,8 @@
     </style>
 </head>
 <body>
+    <!-- عنوان صفحه -->
+    <div class="page-title">خاموشی خانه</div>
 
     <!-- نمایش تاریخ و ساعت -->
     <div class="date-time" id="date-time"></div>
@@ -273,7 +280,7 @@
                 outageEnd = startHour + (outageEnd - endHour);
             }
 
-            document.getElementById("outage-time").innerHTML = `ساعت خاموشی (خانه) امروز: ${outageStart} الی ${outageEnd}`;
+            document.getElementById("outage-time").innerHTML = `ساعت خاموشی امروز: ${outageStart} الی ${outageEnd}`;
         }
 
         setInterval(updateDateTime, 1000);
