@@ -2,269 +2,55 @@
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
-    <title>تاریخ و ساعت</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ساعات خاموشی</title>
     <style>
         body {
-            text-align: center;
             font-family: Arial, sans-serif;
-            direction: rtl;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
         }
-        .date-time {
-            font-size: 2em;
-            color: royalblue;
+        h1 {
             margin-top: 20px;
+            color: #333;
         }
-        .weekday {
-            font-size: 2em;
-            margin-top: 10px;
-            color: mediumseagreen;
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-top: 40px;
         }
-        .hijri-date {
-            font-size: 1.2em;
-            margin-top: 10px;
-            color: purple;
+        .logo-container a {
+            text-decoration: none;
         }
-        .gregorian-date {
-            font-size: 1.2em;
-            margin-top: 10px;
-            color: darkorange;
+        .logo-container img {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .outage-time {
-            font-size: 2em;
-            color: crimson;
-            margin-top: 20px;
-        }
-        .image-container {
-            margin-top: 30px;
-        }
-        .settings-container {
-            display: none;
-            position: absolute;
-            top: 60px;
-            left: 20px;
-            background-color: #f0f0f0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 200px;
-            text-align: left;
-        }
-        .settings-container label, .settings-container input {
-            font-size: 1em;
-            margin: 5px;
-        }
-        .settings-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background-color: blue;
-            color: white;
-            padding: 10px 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        .linkedin-icon {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-        .linkedin-icon img {
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
+        .logo-container img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
 <body>
-
-    <!-- نمایش تاریخ و ساعت -->
-    <div class="date-time" id="date-time"></div>
-    <div class="weekday" id="weekday"></div>
-    <div class="hijri-date" id="hijri-date"></div>
-    <div class="gregorian-date" id="gregorian-date"></div>
-    <div class="outage-time" id="outage-time"></div>
-
-    <div class="image-container">
-        <img src="https://up.20script.ir/file/23a7-power1-outage1-cartoon3.jpg" alt="Power Outage Image" width="300">
-    </div>
-
-    <div class="linkedin-icon">
-        <a href="https://www.linkedin.com/in/saber-s-afshar/" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn">
+    <h1>ساعات خاموشی</h1>
+    <div class="logo-container">
+        <a href="Home.html">
+            <img src="https://up.20script.ir/file/331b-house-icon-neumorphism-style-icons-business-white-ui-ux-home-symbol-homepage-app-button-real-estate-building-stay-home-neumorphic-style-vector-illustration-812892-320.jpg" alt="خانه">
+        </a>
+        <a href="Job.html">
+            <img src="https://up.20script.ir/file/1e26-smart-house-logo-smart-house-icon-home-automation-concept-home-system-with-wireless-centralized-control-vector-ui-icon-neumorphic-ui-ux-white-user-interface-web-button-neumorphism-399089-3042.jpg" alt="محل کار">
+        </a>
+        <a href="Bakery.html">
+            <img src="https://github.com/saberafshar93/Khamoshi/blob/main/bread.jpg" alt="نانوایی">
         </a>
     </div>
-
-    <button class="settings-button" onclick="toggleSettings()">تنظیمات پلن خاموشی</button>
-
-    <div class="settings-container" id="settings-container">
-        <label for="outage-duration">بازه خاموشی (ساعت):</label>
-        <input type="number" id="outage-duration" min="1" max="24" value="1" step="1">
-
-        <div>
-            <p>انتخاب طرح:</p>
-            <div>
-                <label><input type="radio" name="schedule" value="1"> طرح 1 (9 تا 17)</label>
-            </div>
-            <div>
-                <label><input type="radio" name="schedule" value="2"> طرح 2 (9 تا 19)</label>
-            </div>
-            <div>
-                <label><input type="radio" name="schedule" value="3"> طرح 3 (9 تا 21)</label>
-            </div>
-            <div>
-                <label><input type="radio" name="schedule" value="4"> طرح 4 (10 تا 18)</label>
-            </div>
-            <div>
-                <label><input type="radio" name="schedule" value="5"> طرح 5 (10 تا 20)</label>
-            </div>
-            <div>
-                <label><input type="radio" name="schedule" value="6"> طرح 6 (10 تا 22)</label>
-            </div>
-            <div>
-                <label><input type="radio" name="schedule" value="7"> طرح 7 (11 تا 19)</label>
-            </div>
-            <div>
-                <label><input type="radio" name="schedule" value="8"> طرح 8 (11 تا 21)</label>
-            </div>
-            <div>
-                <label><input type="radio" name="schedule" value="9"> طرح 9 (11 تا 23)</label>
-            </div>
-        </div>
-
-        <div>
-            <p>انتخاب پلن:</p>
-            <div>
-                <label><input type="radio" name="plan" value="1"> پلن 1</label>
-                <label><input type="radio" name="plan" value="2"> پلن 2</label>
-            </div>
-            <div>
-                <label><input type="radio" name="plan" value="3"> پلن 3</label>
-                <label><input type="radio" name="plan" value="4"> پلن 4</label>
-            </div>
-            <div>
-                <label><input type="radio" name="plan" value="5"> پلن 5</label>
-                <label><input type="radio" name="plan" value="6"> پلن 6</label>
-            </div>
-            <div>
-                <label><input type="radio" name="plan" value="7"> پلن 7</label>
-                <label><input type="radio" name="plan" value="8"> پلن 8</label>
-            </div>
-            <div>
-                <label><input type="radio" name="plan" value="9"> پلن 9</label>
-            </div>
-        </div>
-
-        <button onclick="saveSettings()">تایید</button>
-    </div>
-
-    <script>
-        // داده‌های ذخیره شده در localStorage
-        let outageDuration = 1;
-        let selectedPlan = 1;
-        let schedule = 2;
-
-        // بازیابی اطلاعات ذخیره شده
-        if (localStorage.getItem("outageDuration")) {
-            outageDuration = parseInt(localStorage.getItem("outageDuration"));
-            document.getElementById("outage-duration").value = outageDuration;
-        }
-        if (localStorage.getItem("selectedPlan")) {
-            selectedPlan = parseInt(localStorage.getItem("selectedPlan"));
-            document.querySelector(`input[name="plan"][value="${selectedPlan}"]`).checked = true;
-        }
-        if (localStorage.getItem("schedule")) {
-            schedule = parseInt(localStorage.getItem("schedule"));
-            document.querySelector(`input[name="schedule"][value="${schedule}"]`).checked = true;
-        }
-
-        function toggleSettings() {
-            const settingsContainer = document.getElementById('settings-container');
-            settingsContainer.style.display = settingsContainer.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function saveSettings() {
-            outageDuration = parseInt(document.getElementById('outage-duration').value);
-            localStorage.setItem("outageDuration", outageDuration);
-
-            selectedPlan = parseInt(document.querySelector('input[name="plan"]:checked').value);
-            localStorage.setItem("selectedPlan", selectedPlan);
-
-            schedule = parseInt(document.querySelector('input[name="schedule"]:checked').value);
-            localStorage.setItem("schedule", schedule);
-
-            document.getElementById('settings-container').style.display = 'none';
-            updateOutageTime();
-        }
-
-        function getScheduleTimes(schedule) {
-            switch (schedule) {
-                case 1:
-                    return { startHour: 9, endHour: 17 };
-                case 2:
-                    return { startHour: 9, endHour: 19 };
-                case 3:
-                    return { startHour: 9, endHour: 21 };
-                case 4:
-                    return { startHour: 10, endHour: 18 };
-                case 5:
-                    return { startHour: 10, endHour: 20 };
-                case 6:
-                    return { startHour: 10, endHour: 22 };
-                case 7:
-                    return { startHour: 11, endHour: 19 };
-                case 8:
-                    return { startHour: 11, endHour: 21 };
-                case 9:
-                    return { startHour: 11, endHour: 23 };
-                default:
-                    return { startHour: 9, endHour: 19 };
-            }
-        }
-
-        function updateDateTime() {
-            const now = new Date();
-            const options = { timeZone: 'Asia/Tehran', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            const timeString = now.toLocaleTimeString('fa-IR', options);
-
-            const persianDate = new Intl.DateTimeFormat('fa-IR', { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
-            document.getElementById("date-time").innerHTML = `تاریخ امروز: ${persianDate} - ساعت آنلاین: ${timeString}`;
-
-            const weekday = new Intl.DateTimeFormat('fa-IR', { weekday: 'long' }).format(now);
-            document.getElementById("weekday").innerHTML = ` ${weekday}`;
-
-            const hijriDateOptions = { calendar: 'islamic', day: 'numeric', month: 'long', year: 'numeric' };
-            const hijriDate = new Intl.DateTimeFormat('fa-IR-u-ca-islamic', hijriDateOptions).format(now);
-            document.getElementById("hijri-date").innerHTML = `تاریخ قمری: ${hijriDate}`;
-
-            const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const gregorianDate = now.toLocaleDateString('en-US', gregorianOptions);
-            document.getElementById("gregorian-date").innerHTML = `Today is: ${gregorianDate}`;
-        }
-
-        function updateOutageTime() {
-            const now = new Date();
-            const { startHour, endHour } = getScheduleTimes(schedule);
-
-            const baseDate = new Date(2024, 0, selectedPlan);
-            const daysPassed = Math.floor((now - baseDate) / (1000 * 60 * 60 * 24));
-
-            let outageStart = startHour + (daysPassed * outageDuration) % (endHour - startHour);
-            let outageEnd = outageStart + outageDuration;
-
-            if (outageEnd > endHour) {
-                outageEnd = startHour + (outageEnd - endHour);
-            }
-
-            document.getElementById("outage-time").innerHTML = `ساعت خاموشی امروز: ${outageStart} الی ${outageEnd}`;
-        }
-
-        setInterval(updateDateTime, 1000);
-        setInterval(updateOutageTime, 1000);
-        updateDateTime();
-        updateOutageTime();
-    </script>
-
 </body>
 </html>
