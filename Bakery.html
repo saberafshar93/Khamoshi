@@ -65,15 +65,27 @@
             font-size: 1em;
             cursor: pointer;
         }
-        .linkedin-icon {
+        .header-icons {
             position: absolute;
             top: 20px;
             right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         .linkedin-icon img {
             width: 30px;
             height: 30px;
             cursor: pointer;
+        }
+        .homepage-link {
+            color: #0077b5; /* رنگ لینکدین */
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .homepage-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -90,8 +102,9 @@
         <img src="https://up.20script.ir/file/23a7-power1-outage1-cartoon3.jpg" alt="Power Outage Image" width="300">
     </div>
 
-    <div class="linkedin-icon">
-        <a href="https://www.linkedin.com/in/saber-s-afshar/" target="_blank">
+    <div class="header-icons">
+        <a href="index.html" class="homepage-link">صفحه نخست</a>
+        <a href="https://www.linkedin.com/in/saber-s-afshar/" target="_blank" class="linkedin-icon">
             <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn">
         </a>
     </div>
