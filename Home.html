@@ -273,7 +273,7 @@
                 outageEnd = startHour + (outageEnd - endHour);
             }
 
-            document.getElementById("outage-time").innerHTML = `ساعت خاموشی امروز: ${outageStart} الی ${outageEnd}`;
+            document.getElementById("outage-time").innerHTML = `ساعت خاموشی (خانه) امروز: ${outageStart} الی ${outageEnd}`;
         }
 
         setInterval(updateDateTime, 1000);
