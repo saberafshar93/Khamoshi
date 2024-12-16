@@ -152,7 +152,7 @@
                 <label><input type="radio" name="schedule" value="9"> طرح 9 (11 تا 23)</label>
             </div>
             <div>
-                <label><input type="radio" name="schedule" value="10"> طرح 10 (22:30 تا 8:30)</label>
+                <label><input type="radio" name="schedule" value="10"> طرح 10 (8:30 تا 22:30)</label>
             </div>
         </div>
 
@@ -245,7 +245,7 @@
                 case 9:
                     return { startHour: 11, endHour: 23 };
                 case 10:
-                    return { startHour: 22.30, endHour: 8.30 };
+                    return { startHour: 8.30, endHour: 22.30 };
                 default:
                     return { startHour: 9, endHour: 19 };
             }
