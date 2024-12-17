@@ -152,7 +152,7 @@
                 <label><input type="radio" name="schedule" value="9"> طرح 9 (11 تا 23)</label>
             </div>
             <div>
-                <label><input type="radio" name="schedule" value="10"> طرح 10 (22:30 تا 8:30)</label>
+                <label><input type="radio" name="schedule" value="10"> طرح 10 (8:30 تا 22:30)</label>
             </div>
         </div>
 
@@ -285,7 +285,13 @@
                 outageEnd = startHour + (outageEnd - endHour);
             }
 
-            document.getElementById("outage-time").innerHTML = `ساعت خاموشی امروز: ${outageStart} الی ${outageEnd}`;
+            // Format numbers to show decimals only when needed
+            const formatTime = (time) => {
+                return Number.isInteger(time) ? time.toString() : time.toFixed(2);
+            };
+
+            document.getElementById("outage-time").innerHTML = 
+                `ساعت خاموشی امروز: ${formatTime(outageStart)} الی ${formatTime(outageEnd)}`;
         }
 
         setInterval(updateDateTime, 1000);
