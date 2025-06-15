@@ -90,18 +90,41 @@
         </div>
     </div>
 
-    <!--Start of Tawk.to Script-->
-    <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/684e7cfb39b70919105efd23/1itp9gnb6';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
+    <!-- کد چت باکس Tawk.to با قابلیت تشخیص خطا -->
+    <script>
+        // ایجاد یک تابع برای بارگذاری چت باکس
+        function loadTawkTo() {
+            var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+            var s1 = document.createElement('script'),
+                s0 = document.getElementsByTagName('script')[0];
+            
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/684e7cfb39b70919105efd23/1itp9gnb6';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            
+            // اضافه کردن هندلرهای رویداد برای تشخیص خطا
+            s1.onload = function() {
+                console.log('چت پشتیبانی با موفقیت بارگذاری شد');
+            };
+            
+            s1.onerror = function() {
+                console.error('خطا در بارگذاری چت پشتیبانی');
+                // نمایش پیام به کاربر در صورت نیاز
+                alert('سیستم چت پشتیبانی موقتاً در دسترس نیست. لطفاً بعداً تلاش کنید.');
+            };
+            
+            s0.parentNode.insertBefore(s1, s0);
+        }
+
+        // بارگذاری چت باکس پس از لود کامل صفحه
+        if (window.addEventListener) {
+            window.addEventListener("load", loadTawkTo, false);
+        } else if (window.attachEvent) {
+            window.attachEvent("onload", loadTawkTo);
+        } else {
+            window.onload = loadTawkTo;
+        }
     </script>
-    <!--End of Tawk.to Script-->
 </body>
 </html>
